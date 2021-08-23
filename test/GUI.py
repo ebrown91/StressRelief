@@ -1,38 +1,44 @@
-from dearpygui.core import *
-from dearpygui.simple import *
-
-set_main_window_size(500, 500)
+import dearpygui.dearpygui as dpg
 
 
-# callback
-def retrieve_callback(sender, callback):
-
-    show_logger()
-    log_info(get_value("Regular##inputtext"))
-    log_info(get_value("With hint##inputtext"))
-    log_info(get_value("No spaces##inputtext"))
-    log_info(get_value("Uppercase##inputtext"))
-    log_info(get_value("Decimal##inputtext"))
-    log_info(get_value("Hexadecimal##inputtext"))
-    log_info(get_value("Read Only##inputtext"))
-    log_info(get_value("Password##inputtext"))
-    log_info(get_value("Multiline##inputtext"))
+def combo_callback(sender, app_data, user_data):
+    print(f"sender is: {sender}")
+    print(f"app_data is: {app_data}")
+    print(f"user_data is: {user_data}")
 
 
-with window("Main Window"):
-    add_text("This example demonstrates the input text widget.", bullet=True)
-    add_text("Press the 'Retrieve' button to display the input values in the logger", wrap=500, bullet=True)
+with dpg.window(label="Tutorial") as window:
+    # When creating items within the scope of the context
+    # manager, they are automatically "parented" by the
+    # container created in the initial call. So, "window"
+    # will be the parent for all of these items.
 
-    add_input_text("Regular##inputtext")
-    add_input_text("With hint##inputtext", hint="A hint")
-    add_input_text("No spaces##inputtext", no_spaces=True)
-    add_input_text("Uppercase##inputtext", uppercase=True)
-    add_input_text("Decimal##inputtext", decimal=True)
-    add_input_text("Hexadecimal##inputtext", hexadecimal=True)
-    add_input_text("Read Only##inputtext", readonly=True, default_value="read only")
-    add_input_text("Password##inputtext", password=True)
-    add_input_text("Multiline##inputtext", multiline=True)
+    button1 = dpg.add_button(label="Press Me!")
+    input_txt1 = dpg.add_input_text(
+        label = "Heat Number"
+        #user_data = ()
+    )
+        with
 
-    add_button("Retrieve", callback=retrieve_callback)
+    combo1 = dpg.add_combo(
+        label = "Tubular OD",
+        items =['2.375', '2.875'],
+        drag_callback = combo_callback,
+        user_data= "weeee"
+    )
 
-start_dearpygui(primary_window="Main Window")
+
+    slider_int = dpg.add_slider_int(label="Slide to the left!",width=100)
+    dpg.add_same_line(spacing=10)
+    slider_float = dpg.add_slider_float(label="Slide to the right!",width=100)
+
+    # An item's unique identifier (id) is returned when
+    # creating items.
+    print(f"Printing item id's: {window}, {button1}, {slider_int}, {slider_float}")
+
+# If you want to add an item to an existing container, you
+# can specify which by passing the container's id as the
+# "parent" parameter.
+button2=dpg.add_button(label="Don't forget me!", parent=window)
+
+dpg.start_dearpygui()
